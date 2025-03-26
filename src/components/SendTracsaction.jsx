@@ -1,10 +1,15 @@
 import * as React from "react";
 import { useSendTransaction, useWaitForTransactionReceipt } from "wagmi";
 import { parseEther } from "viem";
-import { toast } from 'react-toastify';
+import { toast } from "react-toastify";
 
 export function SendTransaction() {
-  const { data: hash, sendTransaction, isPending, error } = useSendTransaction();
+  const {
+    data: hash,
+    sendTransaction,
+    isPending,
+    error,
+  } = useSendTransaction();
 
   async function submit(e) {
     e.preventDefault();
@@ -13,9 +18,9 @@ export function SendTransaction() {
     const value = formData.get("value");
     try {
       sendTransaction({ to, value: parseEther(value) });
-      toast.info('Transaction is being processed...');
+      toast.info("Transaction is being processed...");
     } catch {
-      toast.error('Failed to send transaction');
+      toast.error("Failed to send transaction");
     }
   }
 
@@ -26,7 +31,7 @@ export function SendTransaction() {
 
   React.useEffect(() => {
     if (isConfirmed) {
-      toast.success('Transaction confirmed successfully!');
+      toast.success("Transaction confirmed successfully!");
     }
   }, [isConfirmed]);
 
@@ -37,20 +42,21 @@ export function SendTransaction() {
   }, [error]);
 
   return (
-    <form onSubmit={submit} className="flex flex-col gap-2 my-4">
-      <div className="flex flex-row gap-2">
-      <input name="address" placeholder="0xA0Cf…251e" required />
-      <input name="value" placeholder="0.05" required />
-      </div>
-      <button disabled={isPending} type="submit">
-        {isPending ? "Confirming..." : "Send"}
-      </button>
-      {hash && <div>Transaction Hash: {hash}</div>}
-      {isConfirming && <div>Waiting for confirmation...</div>}
-      {isConfirmed && <div>Transaction confirmed.</div>}
-      {error && (
-        <div>Error: {(error).shortMessage || error.message}</div>
-      )}
-    </form>
+    <>
+      <h2 className="text-lg font-semibold">Send BNB</h2>
+      <form onSubmit={submit} className="flex flex-col gap-2 w-full">
+        <div className="flex flex-row gap-2">
+          <input name="address" placeholder="0xA0Cf…251e" required />
+          <input name="value" type="number" placeholder="0.05" required />
+        </div>
+        <button className="w-full bg-blue-500 hover:bg-blue-600 rounded text-white" disabled={isPending} type="submit">
+          {isPending ? "Confirming..." : "Send"}
+        </button>
+        {hash && <div>Transaction Hash: {hash}</div>}
+        {isConfirming && <div>Waiting for confirmation...</div>}
+        {isConfirmed && <div>Transaction confirmed.</div>}
+        {error && <div>Error: {error.shortMessage || error.message}</div>}
+      </form>
+    </>
   );
 }

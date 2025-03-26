@@ -1,14 +1,20 @@
 import { bscTestnet } from "viem/chains";
-import { useBalance } from "wagmi";
+import { useBalance, useAccount } from "wagmi";
 
 export default function ReadContract() {
+  const { address } = useAccount();
   const { data, isLoading, isError } = useBalance({
-    address: "0xf39Fd6e51aad88F6F4ce6aB8827279cffFb92266",
+    address: address,
     chainId: bscTestnet.id,
   });
 
+  if (!address) return <div className="my-2">Please connect your wallet</div>;
   if (isLoading) return <div>Loading...</div>;
   if (isError) return <div>Error fetching balance</div>;
 
-  return <div className="my-2">Balance: {data?.formatted} BNB</div>;
+  return (
+    <div className="flex gap-2">
+      <span className="font-bold">Balance:</span> {data?.formatted} BNB
+    </div>
+  );
 }
