@@ -1,22 +1,18 @@
 import { useAccount, useDisconnect, useEnsName } from "wagmi";
 import { toast } from "react-toastify";
-import { useEffect } from "react";
 
 export function Account() {
   const { address } = useAccount();
+  console.log(" Account ~ address:", address)
   const { disconnect } = useDisconnect();
   const { data: ensName } = useEnsName({ address });
+  console.log(" Account ~ ensName:", ensName)
 
   const handleDisconnect = () => {
     disconnect();
     toast.success("Disconnected wallet successfully");
   };
 
-  useEffect(() => {
-    if (address) {
-      toast.success("Wallet connected successfully!");
-    }
-  }, [address])
 
   return (
     <div className="flex flex-col gap-2 items-center justify-center text-md text-gray-300">

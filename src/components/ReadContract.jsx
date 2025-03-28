@@ -1,20 +1,38 @@
 import { bscTestnet } from "viem/chains";
-import { useBalance, useAccount } from "wagmi";
+import { useBalance, useAccount, useWatchPendingTransactions, useBlockNumber } from "wagmi";
+import { useEffect } from "react";
 
 export default function ReadContract() {
   const { address } = useAccount();
-  const { data, isLoading, isError } = useBalance({
+  const { data, isLoading, isError, refetch } = useBalance({
     address: address,
     chainId: bscTestnet.id,
+    blockTag: 'latest',
   });
 
-  if (!address) return <div className="my-2">Please connect your wallet</div>;
+  useWatchPendingTransactions({
+    onTransactions: () => {
+      refetch();
+    }
+  });
+
+  const { data: blockNumber } = useBlockNumber({
+    chainId: bscTestnet.id,
+    watch: true,
+  });
+
+  useEffect(() => {
+    if (blockNumber) {
+      refetch();
+    }
+  }, [blockNumber, refetch]);
+
   if (isLoading) return <div>Loading...</div>;
   if (isError) return <div>Error fetching balance</div>;
 
   return (
-    <div className="flex gap-2">
-      <span className="font-bold">Balance:</span> {data?.formatted} BNB
-    </div>
+    <p className="flex gap-2 text-symbol-primary items-end text-4xl mb-2">
+      {data?.formatted} <span className="text-lg">tBNB</span>
+    </p>
   );
 }
