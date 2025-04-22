@@ -16,6 +16,7 @@ const TOKENS = {
     decimals: 18,
   },
 };
+// asdasd
 
 export function ERC20Token() {
   const { address } = useAccount();
@@ -48,27 +49,27 @@ export function ERC20Token() {
 
   return (
     <div className='my-4'>
-      <h2 className='text-red-500 text-4xl font-bold mb-4 text-center'>
+      <h2 className='mb-4 text-4xl font-bold text-center text-red-500'>
         ERC20 Token Operations
       </h2>
 
-      <div className='flex flex-col gap-2 bg-gray-800 p-6 rounded-lg shadow-lg w-full items-start mt-4'>
-        <div className='flex flex-col gap-2 justify-center items-center w-full'>
+      <div className='flex flex-col items-start w-full gap-2 p-6 mt-4 bg-gray-800 rounded-lg shadow-lg'>
+        <div className='flex flex-col items-center justify-center w-full gap-2'>
           <img src={busdIcon} className='w-24 h-24 mb-2' alt='BUSD Icon' />
-            <p className='text-symbol-primary text-4xl mb-2'>
+            <p className='mb-2 text-4xl text-symbol-primary'>
               {balance ? formatUnits(balance, currentToken.decimals) : '0'}{' '}
               <span className='text-lg'>{currentToken.symbol}</span>
             </p>
         </div>
         <form
           onSubmit={(e) => e.preventDefault()}
-          className='flex flex-col gap-2 w-full'
+          className='flex flex-col w-full gap-2'
         >
           <div className='flex flex-col gap-2'>
             <select
               value={selectedToken}
               onChange={(e) => setSelectedToken(e.target.value)}
-              className='p-2 border rounded bg-white text-black'
+              className='p-2 text-black bg-white border rounded'
             >
               {Object.keys(TOKENS).map((token) => (
                 <option key={token} value={token}>
@@ -107,7 +108,7 @@ export function ERC20Token() {
                 console.log('error', error);
               }
             }}
-            className='w-full bg-gradient-primary hover:bg-gradient-primary-hover rounded-lg text-white py-2 transition-all duration-300 ease-in-out transform hover:shadow-lg disabled:bg-gray-400 disabled:hover:scale-100 disabled:hover:shadow-none'
+            className='w-full py-2 text-white transition-all duration-300 ease-in-out transform rounded-lg bg-gradient-primary hover:bg-gradient-primary-hover hover:shadow-lg disabled:bg-gray-400 disabled:hover:scale-100 disabled:hover:shadow-none'
           >
             {isPending || isConfirming ? 'Confirming...' : 'Send Tokens'}
           </button>
