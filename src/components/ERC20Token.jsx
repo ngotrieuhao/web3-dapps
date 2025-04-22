@@ -16,7 +16,6 @@ const TOKENS = {
     decimals: 18,
   },
 };
-// asdasd
 
 export function ERC20Token() {
   const { address } = useAccount();
